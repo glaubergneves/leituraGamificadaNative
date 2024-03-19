@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView } from "react-native";
 import BookList from "../../componentes/bookList";
 import CampoTexto from "../../componentes/campoTexto";
+import BookDetailsModal from "../../componentes/bookDetailsModal";
 
 const BookListPage = () => {
   const [books, setBooks] = useState([]);
@@ -9,6 +10,7 @@ const BookListPage = () => {
   const [filtroAutor, setFiltroAutor] = useState("");
   const [filtroCategoria, setFiltroCategoria] = useState("");
   const [livrosFiltrados, setFilteredBooks] = useState([]);
+  const [selectedBook, setSelectedBook] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,9 +58,18 @@ const BookListPage = () => {
     applyFilters();
   }, [filtroTitulo, filtroAutor, filtroCategoria]);
 
+  const onViewDetails = (book) => {
+    setSelectedBook(book);
+  };
+
+  const closeModal = () => {
+    setSelectedBook(null);
+  };
+
   return (
     <ScrollView>
       <View>
+        <Text>Lista de Livros Cadastrados</Text>
         <CampoTexto
           valor={filtroTitulo}
           placeholder="Filtrar por título"
@@ -77,17 +88,12 @@ const BookListPage = () => {
           obrigatorio={false}
           aoAlterado={(valor) => setFiltroCategoria(valor)}
         />
-
-        <Text>Lista de Livros Cadastrados</Text>
-        {livrosFiltrados.length === 0 ? (
-          <View>
-            <Text>Sem livros com esses filtros...</Text>
-            <BookList books={books} />
-          </View>
-        ) : (
-          <BookList books={livrosFiltrados} />
-        )}
+        <BookList
+          books={livrosFiltrados == 0 ? books : livrosFiltrados}
+          onViewDetails={onViewDetails}
+        />
       </View>
+      <BookDetailsModal book={selectedBook} onClose={closeModal} />
     </ScrollView>
   );
 };

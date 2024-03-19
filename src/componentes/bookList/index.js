@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import CardBook from '../cardBook';
 
-const BookList = ({ books }) => {
+const BookList = ({ books, onViewDetails }) => {
   if (!Array.isArray(books)) {
     return <Text>Loading...</Text>; 
   }
@@ -10,7 +10,7 @@ const BookList = ({ books }) => {
   return (
     <View style={styles.bookList}>
       {books.map(book => (
-        <CardBook key={book.ISBN} book={book}></CardBook>
+        <CardBook key={book.ISBN} book={book} onPress={() => onViewDetails(book)}></CardBook>
       ))}
     </View>
   );
