@@ -3,6 +3,7 @@ import { View, Text, ScrollView } from "react-native";
 import BookList from "../../componentes/bookList";
 import CampoTexto from "../../componentes/campoTexto";
 import BookDetailsModal from "../../componentes/bookDetailsModal";
+import { Platform } from 'react-native';
 
 const BookListPage = () => {
   const [books, setBooks] = useState([]);
@@ -66,10 +67,22 @@ const BookListPage = () => {
     setSelectedBook(null);
   };
 
+  const OSInfo = () => {
+    let message = '';
+    
+    if (Platform.OS === 'android') {
+      message = 'Você está usando um dispositivo Android.';
+    }
+    if (Platform.OS === 'ios') {
+      message = 'Você está usando um dispositivo iOS.';
+    }
+  }
+  
+
   return (
     <ScrollView>
       <View>
-        <Text>Lista de Livros Cadastrados</Text>
+        <Text>Lista de Livros Cadastrados - {message}</Text>
         <CampoTexto
           valor={filtroTitulo}
           placeholder="Filtrar por título"
